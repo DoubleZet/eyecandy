@@ -8,7 +8,7 @@ ASK_TO_REBOOT=0
 EXEC_PATH=/usr/bin/
 IM_SWITCH_KEY='<Shift>space'
 IM_SWITCH_KEY_BACK='<Shift><Super>space'
-USEFUL_APPS='vim git' # 유용한 앱들은 여기에 추가
+USEFUL_APPS='vim git' # 커스터마이징툴은 여기에 추가 
 VERSION='0.1.3'
 
 argc=$#
@@ -82,7 +82,18 @@ do_concky_start() {
 	conky &
 }
 
+do_activate_concky_on_start_up() {
+start concky () desktop:: enable=TRUE
+	{
+activate on startup
+		{
+			enable=TRUE to disable=FALSE
+		}
+	}
 
+
+activation_mode_on() { }
+apt-get install virtualbox virtual-tool-box
 
 
 
