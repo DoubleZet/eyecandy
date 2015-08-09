@@ -33,6 +33,22 @@ argcv()
     fi
 }
 
+# 윈도우 크기를 설정하는 함수
+calc_wt_size() {
+    WT_HEIGHT=12
+    WT_WIDTH=$(tput cols)
+
+    if [ -z "$WT_WIDTH" ] || [ "$WT_WIDTH" -lt 80 ]; then
+        WT_WIDTH=$(tput cols)
+    elif [ "$WT_WIDTH" -gt 160 ]; then
+        WT_WIDTH=160
+    else
+        WT_WIDTH=120
+    fi
+
+    WT_MENU_HEIGHT=$(($WT_HEIGHT-7))
+}
+
 # eyecandy 시작시 처음으로 나타나는 선택 메뉴
 main() {
     while true; do
@@ -58,11 +74,11 @@ main() {
             3\ *) do_numix_install ;;
             4\ *) do_numix_circle_icon_install ;;
             5\ *) do_compiz_install ;;
-            6\ *) do_compiz_configuration
-	    7\ *) do_cairo_dock_install
-	    8\ *) do_cairo_dock_configuration
-	    9\ *) do_concky_install
-    	    10\ *) do_concky_start
+            6\ *) do_compiz_configuration ;;
+	    7\ *) do_cairo_dock_install ;;
+	    8\ *) do_cairo_dock_configuration ;;
+	    9\ *) do_concky_install ;;
+    	    10\ *) do_concky_start ;;
             *) whiptail --msgbox "Programmer error: unrecognized option" 10 60 1 ;;
         esac || whiptail --msgbox "There was an error running option $FUN" 10 60 1
         else
@@ -89,13 +105,17 @@ finish() {
     exit 0
 }
 
+#
+# 설치함수
+#
+
 do_docky_install() {
 	apt-get install docky
 	#apt-get update
 }
 
 do_docky_set_startup_on_boot() {
-cp 
+	cp 
 }
 
 do_numix_install() {
@@ -137,4 +157,3 @@ do_concky_start() {
 
 enter_passwd
 main
-
