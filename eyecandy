@@ -90,7 +90,7 @@ main() {
 # 루트(root) 사용자로 스크립트를 실행하였는지를 검사
 enter_passwd() {
     if [ $(id -u) -ne 0 ]; then
-        echo 이 스크립트는 루트 권한을 필요로 합니다. sudo cobuntu-config로 실행시켜주십시오.
+        echo 이 스크립트는 루트 권한을 필요로 합니다. sudo ./eyecandy 로 실행시켜주십시오.
         exit 1
     fi
 }
@@ -115,7 +115,7 @@ do_docky_install() {
 }
 
 do_docky_set_startup_on_boot() {
-	cp 
+	
 }
 
 do_numix_install() {
@@ -134,7 +134,7 @@ do_compiz_install() {
 }
 
 do_compiz_configuration() {
-
+	
 }
 
 do_cairo_dock_install() {
@@ -144,7 +144,7 @@ do_cairo_dock_install() {
 }
 
 do_cairo_dock_configuration() {
-
+	
 }
 
 do_concky_install() {
@@ -154,6 +154,51 @@ do_concky_install() {
 do_concky_start() {
 	conky &
 }
+
+#
+# 사용자와 상호작용하지 않는 커멘드라인 옵션
+#
+
+argcv
+
+for i in $*
+do
+  case $i in
+  --memory-split)
+    OPT_MEMORY_SPLIT=GET
+    printf "Not currently supported\n"
+    exit 1
+    ;;
+  --memory-split=*)
+    OPT_MEMORY_SPLIT=`echo $i | sed 's/[-a-zA-Z0-9]*=//'`
+    printf "Not currently supported\n"
+    exit 1
+    ;;
+  --expand-rootfs)
+    INTERACTIVE=False
+    do_expand_rootfs
+    printf "Please reboot\n"
+    exit 0
+    ;;
+  --apply-os-config)
+    INTERACTIVE=False
+    do_apply_os_config
+    exit $?
+    ;;
+  *)
+    # unknown option
+    ;;
+  esac
+done
+
+calc_wt_size
+
+# Everything else needs to be run as root
+#if [ -n "${OPT_MEMORY_SPLIT:-}" ]; then
+#  set -e # Fail when a command errors
+#  set_memory_split "${OPT_MEMORY_SPLIT}"
+#  exit 0
+#fi
 
 enter_passwd
 main
